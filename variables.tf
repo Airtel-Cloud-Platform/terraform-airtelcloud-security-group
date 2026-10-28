@@ -9,37 +9,38 @@ variable "security_group_name" {
 }
 
 variable "availability_zone" {
-  description = "Availability zone"
+  description = "Availability zone. Optional in the provider."
   type        = string
-
-  validation {
-    condition     = length(trim(var.availability_zone, " ")) > 0
-    error_message = "availability_zone cannot be empty."
-  }
+  default     = null
 }
 
 variable "ingress_rules" {
-  description = "Ingress security group rules"
+  description = "Ingress rules created as airtelcloud_security_group_rule (direction=ingress). from_port/to_port map to port_range_min/max; cidr maps to remote_ip_prefix."
 
   type = list(object({
-    protocol    = string
-    from_port   = number
-    to_port     = number
-    cidr        = string
-    description = optional(string)
+    protocol        = string
+    from_port       = number
+    to_port         = number
+    cidr            = optional(string)
+    remote_group_id = optional(string)
+    ethertype       = optional(string, "IPv4")
+    description     = optional(string)
   }))
 
   default = []
 }
+
 variable "egress_rules" {
-  description = "Egress security group rules"
+  description = "Egress rules created as airtelcloud_security_group_rule (direction=egress)."
 
   type = list(object({
-    protocol    = string
-    from_port   = number
-    to_port     = number
-    cidr        = string
-    description = optional(string)
+    protocol        = string
+    from_port       = number
+    to_port         = number
+    cidr            = optional(string)
+    remote_group_id = optional(string)
+    ethertype       = optional(string, "IPv4")
+    description     = optional(string)
   }))
 
   default = []

@@ -19,10 +19,9 @@ resource "airtelcloud_security_group_rule" "ingress" {
   port_range_max = tostring(each.value.to_port)
 
   remote_ip_prefix = each.value.cidr
-
-  ethertype = "IPv4"
-
-  description = try(each.value.description, null)
+  remote_group_id  = each.value.remote_group_id
+  ethertype        = each.value.ethertype
+  description      = each.value.description
 }
 
 resource "airtelcloud_security_group_rule" "egress" {
@@ -41,8 +40,7 @@ resource "airtelcloud_security_group_rule" "egress" {
   port_range_max = tostring(each.value.to_port)
 
   remote_ip_prefix = each.value.cidr
-
-  ethertype = "IPv4"
-
-  description = try(each.value.description, null)
+  remote_group_id  = each.value.remote_group_id
+  ethertype        = each.value.ethertype
+  description      = each.value.description
 }
